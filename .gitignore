@@ -1,0 +1,9 @@
+# Build artifacts
+curl-*/
+curl-*.tar.gz
+curl_install/
+
+# Editor / OS
+*.swp
+*~
+.DS_Store
