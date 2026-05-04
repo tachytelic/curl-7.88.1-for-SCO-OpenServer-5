@@ -43,6 +43,49 @@ curl -sI https://www.google.com/
 The CA bundle path `/usr/local/etc/ssl/cert.pem` is baked into the
 curl binary as the default — no `--cacert` flag needed.
 
+## Bootstrapping the rest of your system
+
+This is the only file you need to scp onto a fresh SCO box. Once curl
+is in place you can fetch everything else over HTTPS from GitHub
+releases. The full chain on a freshly-installed SCO 5.0.7 (no Skunkware,
+no extras):
+
+```sh
+# After curl is installed (above), get GNU tar so you can extract
+# .tar.gz releases in one step instead of piping gunzip into tar.
+# This first one uses stock SCO tools (gunzip + /usr/bin/tar):
+
+curl -LO https://github.com/tachytelic/Tar-1.34-for-SCO-OpenServer-5/releases/download/v1.0.0/tar-1.34-sco.tar.gz
+gunzip -c tar-1.34-sco.tar.gz | /usr/bin/tar xf -
+mv install /usr/local/tar-1.34
+ln -s /usr/local/tar-1.34/bin/tar /usr/local/bin/gtar
+
+# Now `gtar xzf x.tar.gz` works for everything else. Pick what you want:
+
+# Python 3.6.15 with HTTPS (~35 MB)
+curl -LO https://github.com/tachytelic/Python-3.6.15-for-SCO-OpenServer-5/releases/download/v1.0.1/python-3.6.15-sco.tar.gz
+gtar xzf python-3.6.15-sco.tar.gz
+mv install /usr/local/python-3.6.15
+ln -s /usr/local/python-3.6.15/bin/python3 /usr/local/bin/python3
+
+# Lua 5.4.7 (single binary, no tarball)
+curl -LO https://github.com/tachytelic/Lua-5.4.7-for-SCO-OpenServer-5/releases/download/v1.0.0/lua
+chmod +x lua && mv lua /usr/local/bin/lua
+
+# rsync 3.2.7
+curl -LO https://github.com/tachytelic/rsync-3.2.7-for-SCO-OpenServer-5/releases/download/v1.0.0/rsync-3.2.7-sco.tar.gz
+gtar xzf rsync-3.2.7-sco.tar.gz
+# ...etc per each repo's README
+```
+
+That's the entire bootstrap. Every release verified end-to-end on a SCO
+5.0.7 box: HTTPS fetch from github.com works on our curl, the .tar.gz
+releases extract cleanly with stock tools, and `gtar` then handles every
+later untar in one shot.
+
+The full hub of available builds is at
+[tachytelic.net/2017/07/sco-openserver-5-binaries/](https://tachytelic.net/2017/07/sco-openserver-5-binaries/).
+
 ## What you get
 
 - **Modern TLS** — TLS 1.0/1.1/1.2 (no 1.3 — that needs OpenSSL 1.1.1+,
