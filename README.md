@@ -60,9 +60,20 @@ gunzip -c tar-1.34-sco.tar.gz | /usr/bin/tar xf -
 mv install /usr/local/tar-1.34
 ln -s /usr/local/tar-1.34/bin/tar /usr/local/bin/gtar
 
-# Now `gtar xzf x.tar.gz` works for everything else. Pick what you want:
+# Strongly recommended next: GNU bash 3.2.57. SCO's /bin/sh is /bin/ksh,
+# which is ~20x slower than bash on autoconf-generated configure scripts
+# (literally minutes vs seconds). Anything you ever build from source
+# benefits, and this is the only build you need before you can run any
+# other configure script comfortably:
 
-# Python 3.6.15 with HTTPS (~35 MB)
+curl -LO https://github.com/tachytelic/Bash-3.2.57-for-SCO-OpenServer-5/releases/download/v1.0.0/bash-3.2.57-sco.tar.gz
+gtar xzf bash-3.2.57-sco.tar.gz
+mv install /usr/local/bash-3.2.57
+ln -s /usr/local/bash-3.2.57/bin/bash /usr/local/bin/bash
+
+# After that, pick whichever of the rest you need:
+
+# Python 3.6.15 with HTTPS + sqlite3 (~35 MB)
 curl -LO https://github.com/tachytelic/Python-3.6.15-for-SCO-OpenServer-5/releases/download/v1.0.1/python-3.6.15-sco.tar.gz
 gtar xzf python-3.6.15-sco.tar.gz
 mv install /usr/local/python-3.6.15
@@ -72,9 +83,9 @@ ln -s /usr/local/python-3.6.15/bin/python3 /usr/local/bin/python3
 curl -LO https://github.com/tachytelic/Lua-5.4.7-for-SCO-OpenServer-5/releases/download/v1.0.0/lua
 chmod +x lua && mv lua /usr/local/bin/lua
 
-# rsync 3.2.7
-curl -LO https://github.com/tachytelic/rsync-3.2.7-for-SCO-OpenServer-5/releases/download/v1.0.0/rsync-3.2.7-sco.tar.gz
-gtar xzf rsync-3.2.7-sco.tar.gz
+# rsync 3.2.7 (single binary)
+curl -LO https://github.com/tachytelic/rsync-3.2.7-for-SCO-OpenServer-5/releases/download/v1.0.0/rsync
+chmod +x rsync && mv rsync /usr/local/bin/rsync
 # ...etc per each repo's README
 ```
 
