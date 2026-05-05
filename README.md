@@ -86,6 +86,17 @@ chmod +x lua && mv lua /usr/local/bin/lua
 # rsync 3.2.7 (single binary)
 curl -LO https://github.com/tachytelic/rsync-3.2.7-for-SCO-OpenServer-5/releases/download/v1.0.0/rsync
 chmod +x rsync && mv rsync /usr/local/bin/rsync
+
+# nano 2.9.8 (full-screen editor with syntax highlighting + 256-colour terminfo)
+curl -LO https://github.com/tachytelic/Nano-2.9.8-for-SCO-OpenServer-5/releases/download/v1.0.0/nano-2.9.8-sco.tar.gz
+gtar xzf nano-2.9.8-sco.tar.gz
+mv install /usr/local/nano-2.9.8
+ln -s /usr/local/nano-2.9.8/bin/nano /usr/local/bin/nano
+
+# coreutils 8.32 (gls/gcp/gdu/gsort/etc. with --color, -h, long options)
+curl -LO https://github.com/tachytelic/Coreutils-8.32-for-SCO-OpenServer-5/releases/download/v1.0.0/coreutils-8.32-sco.tar.gz
+gtar xzf coreutils-8.32-sco.tar.gz
+mv install /usr/local/coreutils-8.32
 # ...etc per each repo's README
 ```
 
